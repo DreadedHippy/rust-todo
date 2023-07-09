@@ -1,6 +1,6 @@
 # 💫Rust-Todo💫 <sub>by Aizon</sub>
 A CLI To-do application built with the Rust programming language
-
+## ![Repo Views](https://vbr.wocr.tk/badge?page_id=DreadedHippy.rust-todo&text=views&color=4EC820&logo=Github)
 ### Usage
 To use this application, simply clone the repo to your preferred directory, and with rust installed on your machine, navigate to the directory and run any of the following commands
 
