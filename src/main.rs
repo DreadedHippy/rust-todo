@@ -27,13 +27,22 @@ fn main() {
         Some("list") => list_todos(),
         Some("delete") => if let Some(id) = second_arg{
             delete_todo(id)
+        } else {
+            println!("Provide the ID of the todo you would like to delete")
         },
+
         Some("get") => if let Some(id) = second_arg{
             get_todo(id)
+        } else {
+            println!("Provide the ID of the todo you would like to get")
         },
+
         Some("complete") => if let Some(id) = second_arg{
             complete_todo(id)
+        } else {
+            println!("Provide the ID of the todo you would like to complete")
         },
+
         Some("wipe") => {
             wipe_database()
         }
@@ -42,11 +51,9 @@ fn main() {
 }
 
 fn create_todo(title: String, description: String) {
-    let database = get_db_info().0;
-    let id = get_db_info().1 + 1;
-
+    let (database, id) = get_db_info();
     let todo = Todo{
-        id,
+        id: id+1,
         title,
         description,
         completed: false 
@@ -66,13 +73,21 @@ fn list_todos(){
 fn delete_todo(id: String) {
     let database = BufReader::new(File::open(FILE_PATH).unwrap());
     let mut not_removed = true;
-
     let mut overwrite = String::new();
+    let id = match id.parse::<usize>() {
+        Ok(num) => num,
+        Err(_) => {
+            0
+        }
+    };
+
+    if id == 0 {println!("Please enter a valid ID");return;}
+
 
     for line in database.lines(){
         let line_val = line.unwrap();
         let line_val: Vec<String> = line_val.split_whitespace().map(String::from).collect();
-        if line_val[0] != id {
+        if line_val[0].parse::<usize>().unwrap() != id {
             overwrite = overwrite+ &line_val.join(" ") + "\n";
         } else {
             not_removed = false;
@@ -101,12 +116,11 @@ fn get_todo(id: String) {
     let id = match id.parse::<usize>() {
         Ok(num) => num,
         Err(_) => {
-            println!("Please enter a valid ID");
             0
         }
     };
 
-    if id == 0 {return;}
+    if id == 0 {println!("Please enter a valid ID");return;}
 
     let mut not_found = true;
     for line in database.lines(){
@@ -131,12 +145,11 @@ fn complete_todo(id: String) {
     let id = match id.parse::<usize>() {
         Ok(num) => num,
         Err(_) => {
-            println!("Please enter a valid ID");
             0
         }
     };
 
-    if id == 0 {return;}
+    if id == 0 {println!("Please enter a valid ID");return;}
 
     let mut not_found = true;
     let mut overwrite = String::new();
@@ -187,7 +200,7 @@ fn get_db_info() -> (std::fs::File, usize) {
         i += 1;
 
         if i == g{
-            let line_val: Vec<String> = line.unwrap().split_whitespace().map(|x| x.to_string()).collect();
+            let line_val: Vec<String> = line.unwrap().split_whitespace().map(String::from).collect();
             last_id = line_val[0].parse().unwrap();
         }
     }
