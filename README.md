@@ -30,4 +30,9 @@ Note: sentence arguments must be wrapped in quotes
 	cargo run delete <`id`>
 ```
 
+- Wipe the todo database
+```md
+	catgo run wipe
+```
+
 I had alot of fun building this project. I hope you have more fun using it 😁

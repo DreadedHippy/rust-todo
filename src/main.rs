@@ -34,6 +34,9 @@ fn main() {
         Some("complete") => if let Some(id) = second_arg{
             complete_todo(id)
         },
+        Some("wipe") => {
+            wipe_database()
+        }
         _ => println!("Please pass a valid todo command"),
     }
 }
@@ -161,6 +164,12 @@ fn complete_todo(id: String) {
         save_to_db(database, overwrite)
     }
 
+}
+
+fn wipe_database() {
+    println!("Wiping database");
+    File::create(FILE_PATH).unwrap();
+    println!("Database wiped!")
 }
 fn get_db_info() -> (std::fs::File, usize) {
     // Open a file with append option
