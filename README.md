@@ -32,7 +32,7 @@ Note: sentence arguments must be wrapped in quotes
 
 - Wipe the todo database
 ```md
-	catgo run wipe
+	cargo run wipe
 ```
 
 I had alot of fun building this project. I hope you have more fun using it 😁
